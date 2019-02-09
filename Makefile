@@ -1,10 +1,10 @@
 SRCS = $(wildcard ./*/*.md ./*.md)
+FNAMES = $(patsubst %.md,%,$(SRCS))
+OBJS = $(patsubst %.md,%.html,$(SRCS))
 
-# all:
-# 	echo "a" $(SRCS) "b"
+all : $(OBJS)
 
-$(subst html, md, $(SRCS)) : $(SRCS)
+%.html: %.md
+# 	echo $(SRCS)
+# $(subst md,html, $(SRCS)) : $(SRCS)
 	pandoc -st html5 $< > $@
-
-# index.html: index.md
-# 	pandoc -st html5 $< > $@

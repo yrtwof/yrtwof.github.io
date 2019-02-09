@@ -11,7 +11,7 @@ css: style.css
 
 <div class = "content">
 
-[ << 戻る](./g9solid.html)
+[ << 戻る](index.html)
 
 <div class = "searcher">
 ## [ソウサクシャ]
@@ -59,5 +59,5 @@ css: style.css
 
 <footer class ="footer">
 <hr>
-<p align = "center"> [top](index.html) </p>
+<p align = "center"> [top](../index.html) </p>
 </footer>

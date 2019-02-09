@@ -11,11 +11,11 @@ css: style.css
 
 <div class = "content">
 
-[[ソウサクシャ]](./searcher.html)
+[[ソウサクシャ]](searcher.html)
 
 </div>
 
 <footer class ="footer">
 <hr>
-<p align = "center"> [top](index.html) </p>
+<p align = "center"> [top](../index.html) </p>
 </footer>
