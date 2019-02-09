@@ -1,6 +1,6 @@
 ---
 pagetitle: ざっぱな置き場
-css: style.css
+css: ../style.css
 ...
 
 <header class = "header">
