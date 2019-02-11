@@ -99,7 +99,7 @@ css: ../style.css
 </div><!-- for -->
 
 <div class="five">
-[キケンヲオカスモノ](searcher.html) を終了させる
+[キケンヲオカスモノ](emergency.html) を終了させる
 
 </div><!-- five -->
 

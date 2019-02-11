@@ -12,9 +12,13 @@ css: ../style.css
 <div class = "content">
 
 [[ソウサクシャ]](searcher.html)
+
 [[キケンヲオカスモノ]](emergency.html)
+
 [[オロカモノノセンタク]](fool.html)
+
 [[ハカイスルモノ]](destroyer.html)
+
 [[アスヲノゾムモノ]](feature.html)
 
 </div>
