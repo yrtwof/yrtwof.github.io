@@ -74,9 +74,9 @@ css: ../style.css
 * エキチョウシツからスーパーB、スーパーAへ行く。
 * スーパーAの入り口から出て、スコップが無い方の、柱の近くの黒い箱、ビデオがスーパーボウル1。鑑定してたしかみてみろ。
 <br>
-<a href="#" id="view3" onClick="t_view(3);return false;">このへん</a>
-<a href="#" id="hidden3" onClick="t_hidden(3);return false;" style="display:none;">隠す</a>
-<div id="img3" style="display:none;">
+<a href="#" id="view1" onClick="t_view(1);return false;">このへん</a>
+<a href="#" id="hidden1" onClick="t_hidden(1);return false;" style="display:none;">隠す</a>
+<div id="img1" style="display:none;">
     <img src = "img/super.PNG" >
 </div>
 * ゲットしたら王様に献上しに行こう。
@@ -170,7 +170,7 @@ css: ../style.css
             * 真面目に倒したい：横縦横縦の4回いい感じに避けるとナイフは避けれるはずれんしうして
             * 倒したい：駅のホームの低いところにフノボリがジャンプで着地するように調整して、ギリギリ刀武器で攻撃が届く位置に誘導すると相手が移動し続けるので実質ハメれる。
             <br>
-            <a href="#" id="view3" onClick="t_view(3);return false;">こんなかんじ</a>
+            <a href="#" id="view3" onClick="t_view(3);return false;">こんくらい</a>
             <a href="#" id="hidden3" onClick="t_hidden(3);return false;" style="display:none;">隠す</a>
             <div id="img3" style="display:none;">
                 <img src = "img/funo.PNG" >
