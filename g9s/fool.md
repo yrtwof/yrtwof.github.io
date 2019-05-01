@@ -73,6 +73,12 @@ css: ../style.css
 #### ● 大目標：スーパーボウル1の回収
 * エキチョウシツからスーパーB、スーパーAへ行く。
 * スーパーAの入り口から出て、スコップが無い方の、柱の近くの黒い箱、ビデオがスーパーボウル1。鑑定してたしかみてみろ。
+<br>
+<a href="#" id="view3" onClick="t_view(3);return false;">このへん</a>
+<a href="#" id="hidden3" onClick="t_hidden(3);return false;" style="display:none;">隠す</a>
+<div id="img3" style="display:none;">
+    <img src = "img/super.PNG" >
+</div>
 * ゲットしたら王様に献上しに行こう。
 
 #### ○小目標1: パワードユニットの回収
@@ -146,13 +152,33 @@ css: ../style.css
     * 八：HP560?
         * 入り口の反対側はケンダマの攻撃が一切届かない。
         * なのでケンダマの踏み潰し攻撃に合わせてチクチク殴ればいつか死ぬ。
-        * 人の頭みたいなアイテム付近で踏み潰しを待ってると良い。
         * 丸い方に判定はないのでスルー推奨。
+        * 人の頭みたいなアイテム付近で踏み潰しを待ってると良い。
+        <br>
+        <a href="#" id="view2" onClick="t_view(2);return false;">このへん</a>
+        <a href="#" id="hidden2" onClick="t_hidden(2);return false;" style="display:none;">隠す</a>
+        <div id="img2" style="display:none;">
+            <img src = "img/kendama.PNG" >
+            <p>
+            アプデでなんか赤丸付近より近くに来るようになった気もするがそれでも比較的安全地帯
+            </p>
+        </div>
+
     * フノボリ：HP230?
         * ナイフをクソ投げてきてめんどくさいのでスルー推奨。
         * どうしても倒したい人
             * 真面目に倒したい：横縦横縦の4回いい感じに避けるとナイフは避けれるはずれんしうして
             * 倒したい：駅のホームの低いところにフノボリがジャンプで着地するように調整して、ギリギリ刀武器で攻撃が届く位置に誘導すると相手が移動し続けるので実質ハメれる。
+            <br>
+            <a href="#" id="view3" onClick="t_view(3);return false;">こんなかんじ</a>
+            <a href="#" id="hidden3" onClick="t_hidden(3);return false;" style="display:none;">隠す</a>
+            <div id="img3" style="display:none;">
+                <img src = "img/funo.PNG" >
+                <p>
+                フノボリが前に移動し続けるのでダンビラ系で攻撃してればOK。途中でどっかいくがその都度誘導しよう
+                </p>
+            </div>
+
         * 泥はハモノ？(サイコダガー)。雑魚のみ未発見状態でバックスタブすると即死できる。
 * 倒したら一度マンガブに戻ってセーブ推奨。
 
@@ -189,6 +215,22 @@ css: ../style.css
 
 
 </div>
+
+<script language="JavaScript" type="text/javascript">
+    <!--
+    function t_view(num) {
+        document.getElementById("img" + num).style.display = "";
+        document.getElementById("view" + num).style.display = "none";
+        document.getElementById("hidden" + num).style.display = "";
+    }
+    function t_hidden(num) {
+      document.getElementById("img" + num).style.display = "none";
+      document.getElementById("view" + num).style.display = "";
+      document.getElementById("hidden" + num).style.display = "none";
+    }
+    -->
+</script>
+
 
 <footer class ="footer">
 <hr>

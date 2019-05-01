@@ -91,14 +91,28 @@
 </ul></li>
 <li>エンカイジョウを登る
 <ul>
-<li>入り口近くのやつを通路下の水路から刀系武器で倒す</li>
+<li>入り口近くのやつを通路下の水路から刀系武器で倒す <br> <a href="#" id="view0" onClick="t_view(0);return false;">このへん</a> <a href="#" id="hidden0" onClick="t_hidden(0);return false;" style="display:none;">隠す</a>
+<div id="img0" style="display:none;">
+<img src = "img/tower.PNG" >
+<p>
+ダンビラなら当たる.
+</p></li>
+</ul>
+</div>
+<ul>
 <li>浮遊カメラを銃で落とす</li>
 <li>1段目に登り、ハコ?(アンドン)を落とす(以降、アンドンは下に落としておいてあとでひろいに来るのが楽)</li>
 <li>2段目中央くらいに着地するように移動</li>
 <li>浮遊カメラを銃で落とす</li>
 <li>3段目、アンドンのある方へ行き浮遊カメラを銃で落とす。4段目の兵士はスルーでOK</li>
 <li>2段目に戻り、今度は逆方向、ふすまがある方向へ行く</li>
-<li>ふすま内には丸ノコが移動しており、最上階には監視カメラがある。丸ノコに当たらないように移動し、カメラの真下に行き剣で壊しておく 丸ノコは足場の端にはほぼ移動しないためヤバそうになったら避難するのも手。どっかいくまで待ってても良い。</li>
+<li>ふすま内には丸ノコが移動しており、最上階には監視カメラがある。丸ノコに当たらないように移動し、カメラの真下に行き剣で壊しておく
+<ul>
+<li>丸ノコは足場の端にはほぼ移動しないためヤバそうになったら避難するのも手。どっかいくまで待ってても良い。 <br> <a href="#" id="view1" onClick="t_view(1);return false;">このへん</a> <a href="#" id="hidden1" onClick="t_hidden(1);return false;" style="display:none;">隠す</a>
+<div id="img1" style="display:none;">
+<img src = "img/nohit.PNG" ></li>
+</ul>
+</div></li>
 <li>丸ノコのふすまから出て、4段目に、浮遊カメラ落とす</li>
 <li>5段目に移動、6段目の兵士を銃で落とす</li>
 <li>6段目に移動、7段目近くの端に寄って浮遊カメラ落とす</li>
@@ -214,6 +228,20 @@
 <p><a href="feature.html">アスヲノゾムモノへ &gt;&gt;</a></p>
 </div>
 <!-- cont -->
+<script language="JavaScript" type="text/javascript">
+    <!--
+    function t_view(num) {
+        document.getElementById("img" + num).style.display = "";
+        document.getElementById("view" + num).style.display = "none";
+        document.getElementById("hidden" + num).style.display = "";
+    }
+    function t_hidden(num) {
+      document.getElementById("img" + num).style.display = "none";
+      document.getElementById("view" + num).style.display = "";
+      document.getElementById("hidden" + num).style.display = "none";
+    }
+    -->
+</script>
 <footer class ="footer">
 <hr>
 <p align="center">

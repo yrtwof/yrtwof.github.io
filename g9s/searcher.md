@@ -116,6 +116,16 @@ css: ../style.css
     * ヨイナラ：HP190？
         * 6ダメージとかなり痛い。が、攻撃範囲に制限があるので遠距離からぺちぺちしてればよい
         * 地面潜って自機狙いの際に刀でブンブンもアリ
+        <br>
+        <a href="#" id="view3" onClick="t_view(3);return false;">このくらいの距離</a>
+        <a href="#" id="hidden3" onClick="t_hidden(3);return false;" style="display:none;">隠す</a>
+        <div id="img3" style="display:none;">
+            <img src = "img/yoinara.PNG" >
+            <p>
+            このくらいなら当たらない。
+            </p>
+        </div>
+
 </div><!-- six -->
 
 <div class="sev">
@@ -128,6 +138,22 @@ css: ../style.css
 [ オロカモノノセンタク　へ　>> ](fool.html)
 
 </div><!-- cont -->
+
+<script language="JavaScript" type="text/javascript">
+    <!--
+    function t_view(num) {
+        document.getElementById("img" + num).style.display = "";
+        document.getElementById("view" + num).style.display = "none";
+        document.getElementById("hidden" + num).style.display = "";
+    }
+    function t_hidden(num) {
+      document.getElementById("img" + num).style.display = "none";
+      document.getElementById("view" + num).style.display = "";
+      document.getElementById("hidden" + num).style.display = "none";
+    }
+    -->
+</script>
+
 
 <footer class ="footer">
 <hr>

@@ -6,6 +6,18 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* index */
 .content {
   flex: 1;
+}
+
+.log {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px dotted #333333;
+}
+
+img {
+    width:60%;
 }

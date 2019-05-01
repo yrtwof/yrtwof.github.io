@@ -22,6 +22,16 @@ css: ../style.css
     * 一番合戦：HP40
         * キョウシツに入ったときにヤカラと戦っている。ヤカラからもダメージを受けるので、リセマラしていい感じに一番合戦のHPを減らしておくと楽。
         * ダメージが3と痛い。ロッカーの上で相手と高さを1つズラして戦うと楽。
+        <br>
+        <a href="#" id="view1" onClick="t_view(1);return false;">こんなかんじ</a>
+        <a href="#" id="hidden1" onClick="t_hidden(1);return false;" style="display:none;">隠す</a>
+        <div id="img1" style="display:none;">
+            <img src = "img/iti.PNG" >
+            <p>
+            こんなかんじで。あとは前後しながらダンビラブンブンで勝てる。相手が登ってきたら降りる。
+            </p>
+        </div>
+
         * ショベルを決めて逃げるを繰り返せばわりと簡単に行けるはず
 * 倒すと鍵を落とす
     * 地下倉庫(1階職員室の隣)に行けるようになる
@@ -33,6 +43,16 @@ css: ../style.css
     * 天明屋：HP50
         * ボウガンが痛い。がわりと簡単に見切れるはず。
         * 相手の背中を狙う感じで斜めに移動すれば問題なく倒せるはず。
+        <br>
+        <a href="#" id="view2" onClick="t_view(2);return false;">こんなかんじ</a>
+        <a href="#" id="hidden2" onClick="t_hidden(2);return false;" style="display:none;">隠す</a>
+        <div id="img2" style="display:none;">
+            <img src = "img/10myo.PNG" >
+            <p>
+            攻撃後頑張って敵の背後を取る感じに動く。ジャンプ多用すれば結構当たらない
+            </p>
+        </div>
+
 * 入り口手前、階段の近くからソウコAへ入り、イベントマスで屋上の鍵を入手する
 
 
@@ -90,7 +110,16 @@ css: ../style.css
         * めっちゃ泳いで円盤投げとクナイ攻撃を繰り返すだけ。
         * ケツ
         * プールサイドでクナイ攻撃をひたすら待って攻撃で勝てる。
-            * 自機狙い→ ちょっと前進→クナイ なので、自機狙いの際にちょっと前に飛んでワタヌキの背中側に着地する感じで。
+        <br>
+        <a href="#" id="view3" onClick="t_view(3);return false;">こんなかんじ</a>
+        <a href="#" id="hidden3" onClick="t_hidden(3);return false;" style="display:none;">隠す</a>
+        <div id="img3" style="display:none;">
+            <img src = "img/watanuki.PNG" >
+            <p>
+            自機狙い → ちょっと前進 → クナイ なので、自機狙いの際にちょっと前に飛んでワタヌキの背中側に着地する感じで。
+            </p>
+        </div>
+
 * 体育館の鍵をゲットする
 
 
@@ -160,6 +189,22 @@ css: ../style.css
 
 
 </div><!-- cont -->
+
+<script language="JavaScript" type="text/javascript">
+    <!--
+    function t_view(num) {
+        document.getElementById("img" + num).style.display = "";
+        document.getElementById("view" + num).style.display = "none";
+        document.getElementById("hidden" + num).style.display = "";
+    }
+    function t_hidden(num) {
+      document.getElementById("img" + num).style.display = "none";
+      document.getElementById("view" + num).style.display = "";
+      document.getElementById("hidden" + num).style.display = "none";
+    }
+    -->
+</script>
+
 
 <footer class ="footer">
 <hr>
