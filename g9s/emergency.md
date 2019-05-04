@@ -11,7 +11,7 @@ css: ../style.css
 
 <div class = "content">
 
-[ << 戻る](index.html)
+[ << 戻る ](searcher.html) [ indexへ ](index.html) [  進む >> ](fool.html)
 
 ## [キケンヲオカスモノ]
 

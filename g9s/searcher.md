@@ -11,7 +11,7 @@ css: ../style.css
 
 <div class = "content">
 
-[ << 戻る](index.html)
+ [ indexへ ](index.html) [  進む >> ](emergency.html)
 
 ## [ソウサクシャ]
 
