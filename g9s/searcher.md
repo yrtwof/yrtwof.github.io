@@ -70,7 +70,12 @@ css: ../style.css
 * ロウカB方面、一階のトショシツへ。
 * 段ボールがある本棚の近く、ヒャッカジテンを回収する
     * ヒャッカジテンを使うとSPに*カンテイが追加される
-
+    <br>
+    <a href="#" id="view1" onClick="t_view(1);return false;">このへんの本</a>
+    <a href="#" id="hidden1" onClick="t_hidden(1);return false;" style="display:none;">隠す</a>
+    <div id="img1" style="display:none;">
+        <img src = "img/lib.PNG" >
+    </div>
 </div><!-- sec -->
 
 
