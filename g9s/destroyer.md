@@ -11,7 +11,7 @@ css: ../style.css
 
 <div class = "content">
 
-[ << 戻る ](destroyer.html) [ indexへ ](index.html) [  進む >> ](feature.html)
+[ << 戻る ](fool.html) [ indexへ ](index.html) [  進む >> ](feature.html)
 
 ## [ハカイスルモノ]
 * 日南重工ビルへ行く
@@ -155,12 +155,12 @@ css: ../style.css
 *  ニキータを持ってく
 *  日南ビル1Fの行けなかった入り口からキンシクカクへ行く。
 *  監視カメラの近くに破壊できる扉があるのでスコップなりで破壊する
-    <br>
-    <a href="#" id="view2" onClick="t_view(2);return false;">破壊できるやつ</a>
-    <a href="#" id="hidden2" onClick="t_hidden(2);return false;" style="display:none;">隠す</a>
-    <div id="img2" style="display:none;">
-        <img src = "img/nic-go.PNG" >
-    </div>
+<br>
+<a href="#" id="view2" onClick="t_view(2);return false;">破壊できるやつ</a>
+<a href="#" id="hidden2" onClick="t_hidden(2);return false;" style="display:none;">隠す</a>
+<div id="img2" style="display:none;">
+    <img src = "img/nic-go.PNG" >
+</div>
 *  そこを通って浮遊カメラの反対側で一時停止！
     *  赤いシタイのところを今のママ通るとソクシするので、ニキータを使う
     <br>
