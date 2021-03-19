@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ざっぱな置き場</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../style.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header class = "header">
+<h1 id="動物の近接戦闘時の平均dpsの算出方法とか戦闘時の選択">動物の近接戦闘時の平均DPSの算出方法とか戦闘時の選択</h1>
+<h4 id="明日使えないrimworldでの平均dpsとか戦闘時に使用する部位の話です">明日使えないRimworldでの平均DPSとか戦闘時に使用する部位の話です。</h4>
+<hr>
+</header>
+<div class="content">
+<p><a href="index.html">indexへ</a></p>
+<p>Rimpedia(<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2145524536">これ</a>)作成時に、どうにかして動物の戦闘時の平均DPSを出そうとしたけど、どうやらそう単純な話ではなかったという話。 だいぶ昔に調べた話で、だいぶ忘れているので違うことを平気で語る、かも。</p>
+<h3 id="まず動物が戦闘時にどの値を参照するかの話">● まず動物が戦闘時にどの値を参照するかの話</h3>
+<p>動物が戦闘時に使用する部位は、ThingDef内の&lt;tools&gt;内に書いてある値を参照する。</p>
+<h4 id="toolsの説明">・&lt;tools&gt;の説明</h4>
+<p>toolsとはそもそもtoolのList。 ユーザが xml で書いた tools 内の li の中身がxml解析時にtoolとして読み取られ、値が格納される。今回の解説で使う値は以下。</p>
+<ul>
+<li>power : そのままの意味。つまりダメージ。高いほど強い。</li>
+<li>cooldownTime : そのtoolを使ったときに次に使用するまでの時間。短いほど連打できる。</li>
+<li>chanceFactor : 選択率？みたいな感じ。値が高いほど優先して使用するが、1でも絶対に使うわけではない、という話をこれからする。</li>
+<li>alwaysTreatAsWeapon : 戦闘部位かどうかの判定。falseの場合、その部位のダメージが0.3倍になる。</li>
+</ul>
+<p>話がややこしくなるので、以下が前提条件。</p>
+<ul>
+<li>怪我していない：linkedBodyPartsGroupで特定部位とLinkできるが、その部位の耐久値によってダメージが変動するため。</li>
+<li>surpriseAttackではない：なんか非戦闘時にはダメージボーナスが出るみたいだけどめんどくさいので。</li>
+<li>攻撃者の装備はなし。</li>
+<li>被攻撃者の全部位の耐性は無視。つまりtoolのarmorPenetrationは無視。</li>
+<li>遠距離攻撃とか、距離や範囲で威力が増減するのは無視。：作者がよく分かってないので。</li>
+</ul>
+<h3 id="dpsがどういうふうに算出されるかの話">● DPSがどういうふうに算出されるかの話</h3>
+<p>普通のDPSだとpowerをcooldownTimeで割って～とかなんだけど、Rimworldではどうやら <strong>最もダメージを出す郡のtoolを優先して使う</strong> みたい。 詳しくは VerbProperties やStatWorker_MeleeAverageDPS などを参照。</p>
+<h4 id="dps-算出するときの工程">DPS 算出するときの工程</h4>
+<p>大まかな工程は以下の3つからなる。</p>
+<ol type="1">
+<li>各toolのみを使用した場合のDPSを算出し、最大のDPSのtoolを記録する</li>
+<li>最大のDPSをもとに、各toolをそれぞれ以下に分類する
+<ul>
+<li><em>best</em> : 最大DPS * 0.95以上</li>
+<li><em>mid</em> : 最大DPS * 0.25より上</li>
+<li><em>poor</em> : 最大DPS * 0.25以下</li>
+</ul></li>
+<li>2.で分類の個数と自身の分類により重み付けする</li>
+</ol>
+<h4 id="各toolのdpsの算出">1.各toolのDPSの算出</h4>
+<p>おおまかな計算式は以下。</p>
+<p>単体DPS = chanceFactor * (ダメージ) * (アーマー貫通率) / cooldownTime</p>
+<h4 id="ダメージ">ダメージ</h4>
+<p>(ダメージ) = (power * (装備のダメージ係数 * 素材係数)) * (部位効率) * (成長効率)</p>
+<p>部位効率部分は <em>よくわからん</em> 計算をしてるのでよくわかってない。 成長効率はpawnのcurLifeStageのmeleeDamageFactorのこと</p>
+<h4 id="アーマー貫通率">アーマー貫通率</h4>
+<ul>
+<li>toolsにarmorPenetrationが記述してあれば<strong>その値</strong>に、</li>
+<li>記述がない場合は<strong>ダメージ*0.015</strong></li>
+</ul>
+</div>
+<footer class ="footer">
+<hr>
+<p align="center">
+<a href="../index.html">top</a>
+</p>
+</footer>
+</body>
+</html>

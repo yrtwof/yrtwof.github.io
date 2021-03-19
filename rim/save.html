@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ざっぱな置き場</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../style.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header class = "header">
+<h1 id="rimworldでのデータの保存と読み込み">Rimworldでのデータの保存と読み込み</h1>
+<h4 id="mod製作者ならほぼ全ての人が熟知しているであろうrimworldにおけるデータの保存と読み込みについての話">MOD製作者ならほぼ全ての人が熟知しているであろうRimworldにおけるデータの保存と読み込みについての話。</h4>
+<hr>
+</header>
+<div class="content">
+<p><a href="index.html">indexへ</a></p>
+<p>参考： * <a href="https://spdskatr.github.io/RWModdingResources/saving-guide.html" class="uri">https://spdskatr.github.io/RWModdingResources/saving-guide.html</a></p>
+<h2 id="rimworldでのデータの保存">Rimworldでのデータの保存</h2>
+<p>MODつくるとセーブしたデータがロードすると反映されていなくてにゃーんとなることがままあるが、それらはだいたい保存をしていないからである。</p>
+<p>なのでRimwroldにおいてはデータセーブとロードは必須なのだが、解説記事があんまりないしピンと来ないものなので書く。</p>
+<h2 id="大前提の話">大前提の話</h2>
+<p>RimworldではIExposableに実装されているExposeDataがSave・Load時に読まれて、その中の<code>Scribeほにゃ.Look</code>で値の保存・読み込みが実行され、セーブデータやModSettingに保存されている値を反映させられる。</p>
+<p>なお、MOD導入時などの値が見つからない場合は初期値(場合によってはnull)か defaultValue の値が読み込まれる。</p>
+<h3 id="exposedata">ExposeData</h3>
+<p>IExposableというインターフェイスのメソッド。</p>
+<p>Rimworldでは、セーブとロード時にこのメソッドが呼ばれるので、IExposableを継承して、このメソッド内にデータを保存する処理を書けばいい。</p>
+<pre><code>    public override void ExposeData()
+      {
+        //ここの保存処理を書く
+      }</code></pre>
+<h3 id="scribeを用いたデータの保存">Scribeを用いたデータの保存</h3>
+<p>前節で保存処理を書く場所は書いたので、実際に値を保存する方法を書く。</p>
+<p>Rimworldでは、 保存したいデータの種類に対応した <code>Scribe_ほにゃ</code> クラスの、void Look(...)メソッドを使用して保存・読み込みをする。</p>
+<ul>
+<li>Scribe_Vaues
+<ul>
+<li>基本データ構造(int,float,bool,double...)、列挙体、文字列、UnityEngineで使えそうなやつ(Vector2,Rect,Color,Rot4...)</li>
+<li>Scribe_Vaues.Look(ref target, label, defaultValue = null, forceSave = false )
+<ul>
+<li>target : 保存&amp;読み込みする変数</li>
+<li>label : 保存&amp;読み込み時にこの名前で検索する</li>
+<li>defaultValue : labelで検索して見つからなかった場合に読み込む値。</li>
+<li>forceSave : 値に変更がない場合でも保存するかどうか。trueにするとsavedataの容量が増えるが、元からめちゃ多いからそんなに気にしなくていいと思う。</li>
+</ul></li>
+</ul></li>
+<li>Scribe_Defs
+<ul>
+<li>**Def系(ThingDef,JobDef,Defを継承したもの)</li>
+<li>Scribe_Defs.Look(ref target, label)</li>
+</ul></li>
+<li>Scribe_Deep
+<ul>
+<li>上記のIExposableを継承したクラス</li>
+<li>Scribe_Deep.Look(ref target, saveDestroyedThings = false, label, params)
+<ul>
+<li>saveDestroyedThings : 保存する対象がDestroyed状態の場合に保存するかどうか。</li>
+<li>params : targetの初期化に利用する値。</li>
+</ul></li>
+<li>target内のExposeDataが呼び出されるので、target内で上記のScribe_VauesとかDefsとかを使うのが基本</li>
+</ul></li>
+<li>Scribe_Collections
+<ul>
+<li>Collection(Array,List,HashSet,Dictionary...)の保存に使う。Dictionaryの場合はちょっとめんどくさい。</li>
+<li>Scribe_Collections.Look(list, label, lookMode, param)
+<ul>
+<li>list : リスト。仮にT型とする。</li>
+<li>lookMode : リストに保存&amp;読み込みするデータの種類を指定する列挙体。
+<ul>
+<li>TがintとかならValues, ThingDefとかならDef,自作IExposable継承クラスならDeep</li>
+</ul></li>
+</ul></li>
+<li>Scribe_Collections.Look(dict, label, keyLookMode, valueLookMode)</li>
+<li>Scribe_Collections.Look(dict, label, keyLookMode, valueLookMode, ref keysWorkingList, valueWorkingList)
+<ul>
+<li>dict : 保存したい辞書型。借りにキーをK型、値をV型とする</li>
+<li>keyLookMode : キーの保存&amp;読み込みの種類。前節のlookModeと同じ。</li>
+<li>valueLookMode : 値の保存&amp;読み込みの種類。</li>
+<li>keysWorkingList、valueWorkingList :
+<ul>
+<li>dictを読み込むときに使用する一時リスト。一時的にしか使用しない(ハズ)なので、基本は↑のScribe_Collections.Look(dict, label, keyLookMode, valueLookMode)でいい。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Scribe_References
+<ul>
+<li>使ったことない。なんか参照を保存するらしい。</li>
+</ul></li>
+<li>Scribe_TargetInfo
+<ul>
+<li>使ったことない。ものとか場所とかWorldObjectを指すらしい。JobWorkerとかで使えそう</li>
+</ul></li>
+</ul>
+<h3 id="保存時読み込み時特有の処理">保存時・読み込み時特有の処理</h3>
+<p>保存・読み込んだときにだけやりたい処理がある場合とかは、Scribe.modeの値をみて処理を変える。</p>
+<p>読み込み時には、PostLoadInit → ResolvingCrossRefs →　LoadingVarsの順にScribe.modeが変化するんだと思うんだけど、正直SavingとLoadingVarsだけ覚えておけばいい気がする。要検証。知る必要があるかはわからん。</p>
+<ul>
+<li>Scribe.mode ==
+<ul>
+<li>LoadSaveMode.Inactive : わからん</li>
+<li>LoadSaveMode.Saving : 保存中</li>
+<li>LoadSaveMode.LoadingVars : 読込中</li>
+<li>LoadSaveMode.ResolvingCrossRefs : わからん</li>
+<li>LoadSaveMode.PostLoadInit : 読込後の最終処理？</li>
+</ul></li>
+</ul>
+<h3 id="上記をまとめた使い方例">上記をまとめた使い方例</h3>
+<pre><code>  public override ExposeData(){
+    if(Scribe.mode == LoadSaveMode.Saving){
+        //保存時に不要なデータをlistから削除しておく
+        DeleteNonePawn(list);
+    }
+    else if(Scribe.mode == LoadSaveMode.LoadingVars){
+        // 読み込み時にこのクラスで使用する変数を初期化する
+        // 読み込みとかは下のScribe_ほにゃ.Lookですること。あくまでLookで読み込めない/読み込む必要がない値の初期化。
+        tmp = new List&lt;Pawn&gt;();
+    }
+
+    // saveDataにPawnCountという名前で保存し、
+    // saveDataからPawnCountの値を探し、見つかればそれで、見つからなかったら0で count を初期化する。
+    Scribe_Values.Look(ref count, &quot;PawnCount&quot;, 0);
+
+    Scribe_Collections.Look(ref pawnList, &quot;PawnList&quot;, LookMode.Def, tmp);
+  }</code></pre>
+<p>みたいな感じで。</p>
+<h2 id="保存するデータの単位">保存するデータの単位</h2>
+<p>どこでデータを保存するかの話。 全然調べていないけど、多分 下の２つくらいしか使わないと思う。</p>
+<ul>
+<li>セーブデータ単位：別のセーブデータを読み込んだ際には別のデータが読み込まれる</li>
+<li>ゲーム単位：セーブデータに関わらず読み込む</li>
+</ul>
+<h3 id="セーブデータ単位">セーブデータ単位</h3>
+<p>要は、別のセーブデータを読み込んだ際に別のデータを読み込むかどうかの話。 下のWorldComponentとかMapComponentをOverrideしたのをプロジェクトに追加しておいて、ExposeDataで保存・読み込みしておけば問題ない。</p>
+<ul>
+<li>WorldComponent：
+<ul>
+<li>世界（コロニー、山、道とか）単位でデータを保存する。実質セーブデータ単位で保存するに等しいと思ってる。</li>
+</ul></li>
+<li>MapComponent
+<ul>
+<li>マップ（動物、Pawn、建物とか）単位でデータを保存する。Modとかで使うことがあるかはわからん。建物とかの追加だと使うかも？</li>
+</ul></li>
+</ul>
+<h3 id="ゲーム単位">ゲーム単位</h3>
+<p>セーブデータに関わらず読み込みたい、例えばConfigのMod設定とかでいじれる値とか。 下のModSettingsをOverrideしたのを以下略。</p>
+<ul>
+<li>ModSettings：ゲーム開始時に読み込みされる。</li>
+</ul>
+<h3 id="上記をまとめた使い方例-1">上記をまとめた使い方例</h3>
+<pre><code>  public classs TestModSetting : ModSettings
+  {
+    // なんかMOD独特の設定。
+    private float count;
+
+    public override void ExposeData(){
+        //上と同じく読み書き。
+        Scribe_Values.Look(ref count, &quot;count&quot;, 0);
+    }
+
+  }
+</code></pre>
+</div>
+<footer class ="footer">
+<hr>
+<p align="center">
+<a href="../index.html">top</a>
+</p>
+</footer>
+</body>
+</html>
