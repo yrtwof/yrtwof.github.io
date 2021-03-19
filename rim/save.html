@@ -20,10 +20,10 @@
 <div class="content">
 <p><a href="index.html">indexへ</a></p>
 <p>参考： * <a href="https://spdskatr.github.io/RWModdingResources/saving-guide.html" class="uri">https://spdskatr.github.io/RWModdingResources/saving-guide.html</a></p>
-<h2 id="rimworldでのデータの保存">Rimworldでのデータの保存</h2>
+<h2 id="rimworldでのデータの保存">■Rimworldでのデータの保存</h2>
 <p>MODつくるとセーブしたデータがロードすると反映されていなくてにゃーんとなることがままあるが、それらはだいたい保存をしていないからである。</p>
 <p>なのでRimwroldにおいてはデータセーブとロードは必須なのだが、解説記事があんまりないしピンと来ないものなので書く。</p>
-<h2 id="大前提の話">大前提の話</h2>
+<h2 id="大前提の話">■大前提の話</h2>
 <p>RimworldではIExposableに実装されているExposeDataがSave・Load時に読まれて、その中の<code>Scribeほにゃ.Look</code>で値の保存・読み込みが実行され、セーブデータやModSettingに保存されている値を反映させられる。</p>
 <p>なお、MOD導入時などの値が見つからない場合は初期値(場合によってはnull)か defaultValue の値が読み込まれる。</p>
 <h3 id="exposedata">ExposeData</h3>
@@ -127,7 +127,7 @@
     Scribe_Collections.Look(ref pawnList, &quot;PawnList&quot;, LookMode.Def, tmp);
   }</code></pre>
 <p>みたいな感じで。</p>
-<h2 id="保存するデータの単位">保存するデータの単位</h2>
+<h2 id="保存するデータの単位">■保存するデータの単位</h2>
 <p>どこでデータを保存するかの話。 全然調べていないけど、多分 下の２つくらいしか使わないと思う。</p>
 <ul>
 <li>セーブデータ単位：別のセーブデータを読み込んだ際には別のデータが読み込まれる</li>

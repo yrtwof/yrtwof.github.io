@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ざっぱな置き場</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../style.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header class = "header">
+<h1 id="rimworldでwidnowの作り方">RimworldでWidnowの作り方</h1>
+<h4 id="mod製作者でちょっとggったら出てくる話">MOD製作者でちょっとggったら出てくる話</h4>
+<hr>
+</header>
+<div class="content">
+<p><a href="index.html">indexへ</a></p>
+<h2 id="rimworldにおける画面の描写">Rimworldにおける画面の描写</h2>
+<p>Rimworldの画面描写は、Window抽象クラスをoverrideしたクラス上で、<code>DoWindowContent</code>上に書いてある処理が毎フレーム(?)読み込まれることで実行される。</p>
+<p>あとはだいたいWidgets上のメソッドを適当に呼び出すといい感じの画面ができる。</p>
+<p>Windowの追加はFind.WindowStack.Add(window)でできて、Find.WindowStack.Remove()で取り除ける。</p>
+<h3 id="rect">■Rect</h3>
+<p>UnityEngineで使ってる（と思う）。四角形の範囲を表し、x, y, width, height の４つのパラメータがある。</p>
+<p>※ 実態は xの最小値(xMin)、yの最小値(yMin)と、幅(width)と高さ(height)だが、</p>
+<ul>
+<li>x : x座標。左上が0で、右(?)に行くほど値が増える。</li>
+<li>y : y座標。左上が0で、下(?)に行くほど値が増える。</li>
+<li>width : その範囲の幅を表す。
+<ul>
+<li>xMin : widthの左端。</li>
+<li>xMax : widthの右端。</li>
+</ul></li>
+<li>height : その範囲の高さを表す。
+<ul>
+<li>yMin : heightの上端。</li>
+<li>yMax : heightの下端。</li>
+</ul></li>
+</ul>
+<h3 id="window">■Window</h3>
+<p>だいたいこれをoverrideしていろいろ実装する。</p>
+<h4 id="initialsize">InitialSize</h4>
+<p>Vector2型。画面の大きさ（幅と高さ）。</p>
+<pre><code>public override Vector2 InitialSize
+{
+    get {
+      // float型の幅700と高さ500の Window を作る
+        return new Vector2(700f, 500f);
+    }
+}</code></pre>
+<h4 id="preopen-postopen">PreOpen, PostOpen</h4>
+<p>Windowを開くときのいろいろな処理はココに書く。 例えば、Window内で使用するリストをここで初期化するとか。</p>
+<ul>
+<li>PreOpen -&gt; (windowが開く) -&gt; PostOpen だいたいはPreOpenに書けば問題ないはず。</li>
+</ul>
+<h4 id="preclose-postclose">PreClose, PostClose</h4>
+<p>Windowを閉じるときのいろいろな処理はココに書く。 例えば、Window内で使用したリストをメモリから解放するとか。</p>
+<ul>
+<li>PreClose -&gt; (windowが閉じる) -&gt; PostClose だいたいPostCloseに書けば問題ないと思う。</li>
+</ul>
+<h4 id="dowindowcontentsrect-inrect">DoWindowContents(Rect inRect)</h4>
+<p>InitialSizeのサイズのWindowを作ってinRect内に描写したいWindowの内容を書く。</p>
+<h4 id="細かいあれこれ">細かいあれこれ</h4>
+<p>ILSpyとかでWindowの中をみて変数名で実現したいのをtrueにしろ</p>
+<ul>
+<li>draggable : windowsがドラッグできるか</li>
+<li>soundApper/ soundClose : windowsが開いた/閉じた時の音</li>
+<li>onlyOneOfTypeAllowed : Windowを複数個開くことを許可するか</li>
+<li>resizeable : Windowサイズを可変にするか。可変にするともれなくDoWindowContentの中の処理を真面目に考えないといけない。</li>
+<li>doCloseX : trueにすると右上にX印ができて、これを押して画面が閉じれるようになる。</li>
+<li>doCloseButton : trueにするとWindowの下の方に閉じるボタンができてそれを押して画面を閉じれるようになる。</li>
+<li>closeOnClicledOutSide : trueにするとWindowの画面外をクリック時にWindowを閉じる</li>
+</ul>
+<h3 id="widgets">■Widgets</h3>
+<p>Rimworldでよく使う画面操作系のWindow周りをまとめたクラス。基本ここに実装してあるメソッドを書けば大体の画面は実装できる。</p>
+<p>ILSpyとかを見て手を動かして確認しろ</p>
+<h3 id="tab系">■Tab系</h3>
+<p>Tab作りたいときはこれ。ただRimworld準拠なので結構無駄が多そう。 タブの実装は、タブ本体(TabRecord)と、タブの描写(TabDrawer)を使って実装できる。</p>
+<h4 id="tabrecordstring-label-action-clickedaction-bool-selected">TabRecord(string label, Action clickedAction, bool selected)</h4>
+<ul>
+<li>label : タブのところに表示するタブの名前</li>
+<li>clickedAction : タブクリック時に実行する処理。nowTabとかを別途作っておいて、この中にnowTabをclickしたのにする、みたいな処理を書くとタブ押すと別画面を表示とかできる</li>
+<li>selected : どの状態の場合にタブをアクティブにするか?よくわかってない</li>
+</ul>
+<h4 id="tabdrawer.drawtabsrect-baserect-list-tabs-float-maxtabwidth-200f">TabDrawer.DrawTabs(Rect baseRect, List<TabRecord> tabs, float maxTabWidth = 200f)</h4>
+<h4 id="tabdrawer.drawtabsrect-baserect-list-tabs-int-rows">TabDrawer.DrawTabs(Rect baseRect, List<TabRecord> tabs, int rows)</h4>
+<ul>
+<li>baseRect : タブを表示する場所</li>
+<li>tabs : 上で定義したタブ</li>
+<li>maxTabWidth : タブの横幅</li>
+<li>rows : 表示する列数。tabs内のを全部表示したい場合は上のを使う。</li>
+</ul>
+<h4 id="まとめ">まとめ</h4>
+<pre><code>  private override void PreOpen(){
+    tabList.Clear();
+
+    tabList.Add(new TabRecord(&quot;タブA&quot;,
+      ()=&gt;{
+        nowTab = myTab[0];
+        nowTab.Init();
+      },
+      ()=&gt; nowTab == myTab[0])
+    );
+
+    // 同じようにTabを追加する。
+    ...
+  }
+
+  public override void DoWindowContents(Rect inRect) {
+    ...
+    TabDrawer.DrawTabs(rect, tabList, 26f * tabList.Count() );
+    nowTab.Draw(rect2);
+    ...
+  }</code></pre>
+</div>
+<footer class ="footer">
+<hr>
+<p align="center">
+<a href="../index.html">top</a>
+</p>
+</footer>
+</body>
+</html>

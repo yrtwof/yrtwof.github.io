@@ -15,6 +15,8 @@ css: style.css
 
 [Rimworldへのデータの保存のあれこれ](save.html)
 
+[Rimworldの画面表示のあれこれ](widgets.html)
+
 </div>
 
 

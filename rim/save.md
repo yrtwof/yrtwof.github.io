@@ -16,12 +16,12 @@ css: ../style.css
  * [https://spdskatr.github.io/RWModdingResources/saving-guide.html](https://spdskatr.github.io/RWModdingResources/saving-guide.html)
 
 
-## Rimworldでのデータの保存
+## ■Rimworldでのデータの保存
 MODつくるとセーブしたデータがロードすると反映されていなくてにゃーんとなることがままあるが、それらはだいたい保存をしていないからである。
 
 なのでRimwroldにおいてはデータセーブとロードは必須なのだが、解説記事があんまりないしピンと来ないものなので書く。
 
-## 大前提の話
+## ■大前提の話
 RimworldではIExposableに実装されているExposeDataがSave・Load時に読まれて、その中の```Scribeほにゃ.Look```で値の保存・読み込みが実行され、セーブデータやModSettingに保存されている値を反映させられる。
 
 なお、MOD導入時などの値が見つからない場合は初期値(場合によってはnull)か defaultValue の値が読み込まれる。
@@ -123,7 +123,7 @@ Rimworldでは、
 みたいな感じで。
 
 
-## 保存するデータの単位
+## ■保存するデータの単位
 どこでデータを保存するかの話。
 全然調べていないけど、多分 下の２つくらいしか使わないと思う。
 
