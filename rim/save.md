@@ -80,22 +80,38 @@ Rimworldでは、
 
 * Scribe_References
     * 使ったことない。なんか参照を保存するらしい。
+    * MapやWorld内のThingを管理したいなど、すでにあるObjectへの参照はこれを使用する。
 
 * Scribe_TargetInfo
     * 使ったことない。ものとか場所とかWorldObjectを指すらしい。JobWorkerとかで使えそう
 
 
+#### lookModeについて
+Scribe_Collectionsなどでkeyやvalueを保存する際に、引数として〇〇LookModeというのがある。これは保存するデータによってそれぞれ指定するlookmodeの値が異なる。
+
+* LookMode.
+    * Value：intやfloat, stringなどの定数値
+    * Deep：IExposableを継承したなんらかのクラス
+    * Reference：他のThingなどへの参照
+    * Def：ThingDefなどのDef系
+    * その他：使うときに調べて
+
 ### 保存時・読み込み時特有の処理
 保存・読み込んだときにだけやりたい処理がある場合とかは、Scribe.modeの値をみて処理を変える。
 
-読み込み時には、PostLoadInit → ResolvingCrossRefs →　LoadingVarsの順にScribe.modeが変化するんだと思うんだけど、正直SavingとLoadingVarsだけ覚えておけばいい気がする。要検証。知る必要があるかはわからん。
+保存時にはLoadSaveMode.Savingが1度だけ実行される。
+読み込み時は、複数回ExposeDataが以下の順序で呼ばれる。
+
+1. LoadingVars：値の読み込み。
+2. ResolvingCrossRefs：参照の読み込み。1.で読み込んだ値を使用して読み込む
+3. PostLoadInit：事後処理
 
 * Scribe.mode ==
     * LoadSaveMode.Inactive : わからん
     * LoadSaveMode.Saving : 保存中
-    * LoadSaveMode.LoadingVars : 読込中
-    * LoadSaveMode.ResolvingCrossRefs : わからん
-    * LoadSaveMode.PostLoadInit : 読込後の最終処理？
+    * LoadSaveMode.LoadingVars : 値の読込（intやstringなどの値の読み込み）
+    * LoadSaveMode.ResolvingCrossRefs : 参照の読み込み
+    * LoadSaveMode.PostLoadInit : 読込後の事後処理
 
 
 
@@ -109,6 +125,7 @@ Rimworldでは、
     else if(Scribe.mode == LoadSaveMode.LoadingVars){
         // 読み込み時にこのクラスで使用する変数を初期化する
         // 読み込みとかは下のScribe_ほにゃ.Lookですること。あくまでLookで読み込めない/読み込む必要がない値の初期化。
+        // Lookの引数で指定もできるので無理に書く必要はない
         tmp = new List<Pawn>();
     }
 
@@ -137,7 +154,7 @@ Rimworldでは、
 * WorldComponent：
     * 世界（コロニー、山、道とか）単位でデータを保存する。実質セーブデータ単位で保存するに等しいと思ってる。
 * MapComponent
-    * マップ（動物、Pawn、建物とか）単位でデータを保存する。Modとかで使うことがあるかはわからん。建物とかの追加だと使うかも？
+    * マップ（動物、Pawn、建物とか）単位でデータを保存する。
 
 
 ### ゲーム単位
@@ -145,6 +162,7 @@ Rimworldでは、
 下のModSettingsをOverrideしたのを以下略。
 
 * ModSettings：ゲーム開始時に読み込みされる。
+    * 補足：強制的に保存させたい場合は、Mod.WriteSettingsをPreCloseの際に呼び出せば保存できる。
 
 
 ### 上記をまとめた使い方例

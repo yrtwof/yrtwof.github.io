@@ -13,9 +13,15 @@ css: style.css
 <!-- [平均DPSの算出方法とか戦闘時の選択](dps.html) -->
 <!-- [AlienRaceのメモ](alien/index.html) -->
 
+
+
 [Rimworldへのデータの保存のあれこれ](save.html)
 
 [Rimworldの画面表示のあれこれ](widgets.html)
+
+[物体・動物の構造(準備中)](thing.html)
+
+[平均DPSの算出方法とか戦闘時の選択](dps.html)
 
 </div>
 
@@ -26,6 +32,8 @@ css: style.css
     : コードがクソ汚いしデータ構造がゴミカスなので修正したいが、修正すると既存のと互換性がなくなるという地雷があってにゃーんになりつつある……
     * [My Fave Streamer](https://steamcommunity.com/sharedfiles/filedetails/?id=2403318601)
     : TV視聴時に一定確率で推しを獲得する。推しがいると心情バフが常時・TV視聴時追加される。
+    * [EverythingTable](https://steamcommunity.com/sharedfiles/filedetails/?id=2403318601)
+    : なんでも作成できる工作台を追加するMOD。Tableの画像は変更できる。
 
 
 <div class = "log">

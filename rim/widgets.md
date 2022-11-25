@@ -81,7 +81,20 @@ ILSpyとかでWindowの中をみて変数名で実現したいのをtrueにし�
 ### ■Widgets
 Rimworldでよく使う画面操作系のWindow周りをまとめたクラス。基本ここに実装してあるメソッドを書けば大体の画面は実装できる。
 
-ILSpyとかを見て手を動かして確認しろ
+ILSpyとかを見て手を動かして確認しろ。
+
+#### よく使える便利なメモ
+* Label：ラベル。
+    * 表示する文字が長いとはみ出すこともあるので、そのときはText.CalsSizeとかstring.Truncate(width)とかでlabelを省略するか、LabelFitを使う
+* DrawMenuSection：それっぽい背景を作ってくれる
+* DrawBox：四角□。中まで塗りつぶす場合はDrawBoxSolidを使う
+* BeginScrollView, EndScrollView：スクロールできるエリアを作成する。outRectが外枠（つまりは操作していないときの通常の見える範囲）、viewRectはスクロールされる描写範囲。詳しくは自分で書いてみて
+* DrawTextureFitted：できるだけRect枠にフィットするように画像を配置する。ただし色は自分でつける。
+* Widgets.ThingIcon：ThingDefのiconやiconColorに従った画像を描写する
+* RadioButton, CheckBox：名は体を表す
+    * CheckboxLabeled：↑のCheckBoxのラベル付き
+
+
 
 ### ■Tab系
 Tab作りたいときはこれ。ただRimworld準拠なので結構無駄が多そう。
@@ -97,7 +110,7 @@ Tab作りたいときはこれ。ただRimworld準拠なので結構無駄が多
 * baseRect : タブを表示する場所
 * tabs : 上で定義したタブ
 * maxTabWidth : タブの横幅
-* rows : 表示する列数。tabs内のを全部表示したい場合は上のを使う。
+* rows : タブを縦列に表示するかどうか。これが2以上の場合、重ねて表示されるようになる、ハズ。
 
 #### まとめ
 ```
@@ -123,6 +136,17 @@ Tab作りたいときはこれ。ただRimworld準拠なので結構無駄が多
     ...
   }
 ```
+
+### その他
+* GUI.Color：色。基本値はColor.white。これを変えると↑の図形などに色をつけれる。alphaもあるので透明もできる。
+* Text.Font：フォントサイズ。構造体なのでサイズを可変で～とかはしんどい
+* Text.Anchor：描写内のテキストの配置。
+* string.Truncate：stringがwidth以上になる場合はそこを「...」に書き換えてくれる
+* string.Colorize：colorに応じて文字色を付けるが、たまにうまくいかない事がある。原理はstringの前後の`<color>`みたいなタグを挿入する。
+* TooltipHandler.TipRegion：Rect内にマウスカーソルがあるときにちっちゃい説明ダイアログを表示する。
+* Rect.ContractedBy：marginしたRectを返してくれる。ScrollViewとか作るときにとかBox内にコンテンツ表示させるときに、そのまま書くとイケてない感じになるのをいい感じにしてくれる
+
+
 
 </div>
 

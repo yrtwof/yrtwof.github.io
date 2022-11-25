@@ -89,23 +89,41 @@
 <li>Scribe_References
 <ul>
 <li>使ったことない。なんか参照を保存するらしい。</li>
+<li>MapやWorld内のThingを管理したいなど、すでにあるObjectへの参照はこれを使用する。</li>
 </ul></li>
 <li>Scribe_TargetInfo
 <ul>
 <li>使ったことない。ものとか場所とかWorldObjectを指すらしい。JobWorkerとかで使えそう</li>
 </ul></li>
 </ul>
+<h4 id="lookmodeについて">lookModeについて</h4>
+<p>Scribe_Collectionsなどでkeyやvalueを保存する際に、引数として〇〇LookModeというのがある。これは保存するデータによってそれぞれ指定するlookmodeの値が異なる。</p>
+<ul>
+<li>LookMode.
+<ul>
+<li>Value：intやfloat, stringなどの定数値</li>
+<li>Deep：IExposableを継承したなんらかのクラス</li>
+<li>Reference：他のThingなどへの参照</li>
+<li>Def：ThingDefなどのDef系</li>
+<li>その他：使うときに調べて</li>
+</ul></li>
+</ul>
 <h3 id="保存時読み込み時特有の処理">保存時・読み込み時特有の処理</h3>
 <p>保存・読み込んだときにだけやりたい処理がある場合とかは、Scribe.modeの値をみて処理を変える。</p>
-<p>読み込み時には、PostLoadInit → ResolvingCrossRefs →　LoadingVarsの順にScribe.modeが変化するんだと思うんだけど、正直SavingとLoadingVarsだけ覚えておけばいい気がする。要検証。知る必要があるかはわからん。</p>
+<p>保存時にはLoadSaveMode.Savingが1度だけ実行される。 読み込み時は、複数回ExposeDataが以下の順序で呼ばれる。</p>
+<ol type="1">
+<li>LoadingVars：値の読み込み。</li>
+<li>ResolvingCrossRefs：参照の読み込み。1.で読み込んだ値を使用して読み込む</li>
+<li>PostLoadInit：事後処理</li>
+</ol>
 <ul>
 <li>Scribe.mode ==
 <ul>
 <li>LoadSaveMode.Inactive : わからん</li>
 <li>LoadSaveMode.Saving : 保存中</li>
-<li>LoadSaveMode.LoadingVars : 読込中</li>
-<li>LoadSaveMode.ResolvingCrossRefs : わからん</li>
-<li>LoadSaveMode.PostLoadInit : 読込後の最終処理？</li>
+<li>LoadSaveMode.LoadingVars : 値の読込（intやstringなどの値の読み込み）</li>
+<li>LoadSaveMode.ResolvingCrossRefs : 参照の読み込み</li>
+<li>LoadSaveMode.PostLoadInit : 読込後の事後処理</li>
 </ul></li>
 </ul>
 <h3 id="上記をまとめた使い方例">上記をまとめた使い方例</h3>
@@ -117,6 +135,7 @@
     else if(Scribe.mode == LoadSaveMode.LoadingVars){
         // 読み込み時にこのクラスで使用する変数を初期化する
         // 読み込みとかは下のScribe_ほにゃ.Lookですること。あくまでLookで読み込めない/読み込む必要がない値の初期化。
+        // Lookの引数で指定もできるので無理に書く必要はない
         tmp = new List&lt;Pawn&gt;();
     }
 
@@ -142,13 +161,16 @@
 </ul></li>
 <li>MapComponent
 <ul>
-<li>マップ（動物、Pawn、建物とか）単位でデータを保存する。Modとかで使うことがあるかはわからん。建物とかの追加だと使うかも？</li>
+<li>マップ（動物、Pawn、建物とか）単位でデータを保存する。</li>
 </ul></li>
 </ul>
 <h3 id="ゲーム単位">ゲーム単位</h3>
 <p>セーブデータに関わらず読み込みたい、例えばConfigのMod設定とかでいじれる値とか。 下のModSettingsをOverrideしたのを以下略。</p>
 <ul>
-<li>ModSettings：ゲーム開始時に読み込みされる。</li>
+<li>ModSettings：ゲーム開始時に読み込みされる。
+<ul>
+<li>補足：強制的に保存させたい場合は、Mod.WriteSettingsをPreCloseの際に呼び出せば保存できる。</li>
+</ul></li>
 </ul>
 <h3 id="上記をまとめた使い方例-1">上記をまとめた使い方例</h3>
 <pre><code>  public classs TestModSetting : ModSettings

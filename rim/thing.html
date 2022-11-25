@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ざっぱな置き場</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="../style.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header class = "header">
+<h1 id="rimworldの物体建物などの構造">Rimworldの物体・建物などの構造</h1>
+<h4 id="ggってもあまり出てこない基本的な話">ggってもあまり出てこない基本的な話</h4>
+<hr>
+</header>
+<div class="content">
+<p><a href="index.html">indexへ</a></p>
+<h2 id="rimworldにおける存在">Rimworldにおける存在</h2>
+<p>Rimworldでの物体の表現方法を知ると、実現したいものに対するアプローチがやりやすくなり、xmlに何を記載するべきかがわかりやすくなる。</p>
+<p>でも、そういう、物体とか動物とかの構造を解説している記事は見たことない。 なので、私が知ってる限りの情報を記載する。</p>
+<p>本ページで扱うもの： ・物体（テーブルや建造物、動物、Pawn…） つまりは、ThingDefとPawnKindDef、ThingとPawnなどとの関係 また、それらにMod独自設定や追加を行うための基礎知識</p>
+<h2 id="thingdefモノの定義">ThingDef：モノの定義</h2>
+<p>ThingDefは、Rimworldでの物体を表す構造のこと。C#上にはもっと親の構造があるが、正直ThingDefとその子さえ知っていればほぼ問題ない。</p>
+<p>ThingDefは、表したいモノの「定義」を表す。コロニー内の動物、植物、入植者(Pawn)、鉱石、建造物、生産物、食べ物などは、この、ThingDefを元に作成される。</p>
+<p>ここで、注意したいのが、ThingDefはあくまで定義である。 ThingDefは骨格や特性に近く、実際にゲーム内で処理が行われる単位ではないことに注意したい。 つまり、C#などでThingDefに手を加えると、それを参照するすべてのモノに影響を与える可能性がある。</p>
+<h2 id="thing実際に処理が行われるモノの単位">Thing：実際に処理が行われるモノの単位</h2>
+<p>ThingDefで述べたように、実際のゲーム内で処理が行われる単位は、Thingである。「処理」とは、動かしたり、ダメージを受けてHPを減らしたり、保存されたりを指す。</p>
+<p>ゲーム内のモノは、大体ThingおよびThingを継承したクラスで動かされる。 例えば以下などがある。</p>
+<ul>
+<li>人や動物：Pawn</li>
+<li>植物：Plant</li>
+<li>装備：Apparel</li>
+<li>建造物：Building</li>
+<li>発射物（弓矢とか銃の玉とか）：Projectile、Bullet</li>
+<li>爆発：Explotion</li>
+<li>死体：Corpse</li>
+</ul>
+<p>など</p>
+<p>それぞれ、そのモノの特性に応じたThing派生クラスが定義されている。</p>
+<h2 id="thingdefと動物植物建造物">ThingDefと動物・植物・建造物</h2>
+<p>先程、「モノの特性に応じたThing」と言ったが、実際のxmlを見るとThingDef一つ内に表したいモノに応じた記述をすることになる。</p>
+<p>では、ThingDefで動物、植物、建造物を区別するために何を記載する必要があるかというと、それぞれのモノの特性に合わせたPropertiesが実は定義されている。例えば、</p>
+<ul>
+<li>人や動物：<code>RaceProperties race</code></li>
+<li>植物：<code>PlantProperties plant</code></li>
+<li>建造物：<code>BuildingProperties building</code></li>
+</ul>
+<p>xmlで、動物のThingDefに記載している <code>&lt;race&gt;</code> などはこの <code>RaceProperties</code> の情報である。</p>
+<p>このように、それぞれ表現したいモノに合わせて表現したい部分に記載する必要があり、 逆に、共通的な特性部分、例えば <code>&lt;size&gt;</code>や<code>&lt;category&gt;</code> などはこの<code>&lt;race&gt;</code>などには記載してはいけない。</p>
+<h3 id="動物pawnkinddef-と-thingdef-と-race">■ 動物：PawnKindDef と ThingDef と race</h3>
+<p>Rimworldにおける動物は、</p>
+<ul>
+<li>ThingDef：モノとしての特性</li>
+<li>race：動物としての特性</li>
+<li>PawnKindDef：動物の種族的特性</li>
+</ul>
+<p>の３つを記載する必要がある。</p>
+</div>
+<footer class ="footer">
+<hr>
+<p align="center">
+<a href="../index.html">top</a>
+</p>
+</footer>
+</body>
+</html>

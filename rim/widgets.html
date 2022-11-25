@@ -76,7 +76,23 @@
 </ul>
 <h3 id="widgets">■Widgets</h3>
 <p>Rimworldでよく使う画面操作系のWindow周りをまとめたクラス。基本ここに実装してあるメソッドを書けば大体の画面は実装できる。</p>
-<p>ILSpyとかを見て手を動かして確認しろ</p>
+<p>ILSpyとかを見て手を動かして確認しろ。</p>
+<h4 id="よく使える便利なメモ">よく使える便利なメモ</h4>
+<ul>
+<li>Label：ラベル。
+<ul>
+<li>表示する文字が長いとはみ出すこともあるので、そのときはText.CalsSizeとかstring.Truncate(width)とかでlabelを省略するか、LabelFitを使う</li>
+</ul></li>
+<li>DrawMenuSection：それっぽい背景を作ってくれる</li>
+<li>DrawBox：四角□。中まで塗りつぶす場合はDrawBoxSolidを使う</li>
+<li>BeginScrollView, EndScrollView：スクロールできるエリアを作成する。outRectが外枠（つまりは操作していないときの通常の見える範囲）、viewRectはスクロールされる描写範囲。詳しくは自分で書いてみて</li>
+<li>DrawTextureFitted：できるだけRect枠にフィットするように画像を配置する。ただし色は自分でつける。</li>
+<li>Widgets.ThingIcon：ThingDefのiconやiconColorに従った画像を描写する</li>
+<li>RadioButton, CheckBox：名は体を表す
+<ul>
+<li>CheckboxLabeled：↑のCheckBoxのラベル付き</li>
+</ul></li>
+</ul>
 <h3 id="tab系">■Tab系</h3>
 <p>Tab作りたいときはこれ。ただRimworld準拠なので結構無駄が多そう。 タブの実装は、タブ本体(TabRecord)と、タブの描写(TabDrawer)を使って実装できる。</p>
 <h4 id="tabrecordstring-label-action-clickedaction-bool-selected">TabRecord(string label, Action clickedAction, bool selected)</h4>
@@ -91,7 +107,7 @@
 <li>baseRect : タブを表示する場所</li>
 <li>tabs : 上で定義したタブ</li>
 <li>maxTabWidth : タブの横幅</li>
-<li>rows : 表示する列数。tabs内のを全部表示したい場合は上のを使う。</li>
+<li>rows : タブを縦列に表示するかどうか。これが2以上の場合、重ねて表示されるようになる、ハズ。</li>
 </ul>
 <h4 id="まとめ">まとめ</h4>
 <pre><code>  private override void PreOpen(){
@@ -115,6 +131,16 @@
     nowTab.Draw(rect2);
     ...
   }</code></pre>
+<h3 id="その他">その他</h3>
+<ul>
+<li>GUI.Color：色。基本値はColor.white。これを変えると↑の図形などに色をつけれる。alphaもあるので透明もできる。</li>
+<li>Text.Font：フォントサイズ。構造体なのでサイズを可変で～とかはしんどい</li>
+<li>Text.Anchor：描写内のテキストの配置。</li>
+<li>string.Truncate：stringがwidth以上になる場合はそこを「...」に書き換えてくれる</li>
+<li>string.Colorize：colorに応じて文字色を付けるが、たまにうまくいかない事がある。原理はstringの前後の<code>&lt;color&gt;</code>みたいなタグを挿入する。</li>
+<li>TooltipHandler.TipRegion：Rect内にマウスカーソルがあるときにちっちゃい説明ダイアログを表示する。</li>
+<li>Rect.ContractedBy：marginしたRectを返してくれる。ScrollViewとか作るときにとかBox内にコンテンツ表示させるときに、そのまま書くとイケてない感じになるのをいい感じにしてくれる</li>
+</ul>
 </div>
 <footer class ="footer">
 <hr>
